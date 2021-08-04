@@ -1,6 +1,4 @@
-# Chris Kakos: [FCC] APIs and Microservices Portfolio
-
-<br />
+# APIs and Microservices Portfolio [FCC]
 
 An application that displays a series of microservices using Node and Express as part of the Free Code Camp curriculumn.
 
