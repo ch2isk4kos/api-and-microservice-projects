@@ -34,7 +34,6 @@ app.get("/api/hello", function (req, res) {
 
 app.get("/api/:date_string", function (req, res) {
   let str = req.params.date_string;
-  if (str === null) res.json({ error: "Invalid Date" });
 
   if (parseInt(str) > 10000) {
     let ut = new Date(parseInt(str));
@@ -42,13 +41,15 @@ app.get("/api/:date_string", function (req, res) {
       unix: ut.getTime(),
       utc: ut.toUTCString(),
     });
-  } else {
-    let utc = new Date(str);
-    res.json({
-      unix: utc.getTime(),
-      utc: utc.toUTCString(),
-    });
   }
+
+  let date = new Date(str);
+  if (date === "Invalid Date") res.json({ error: "Invalid Date" });
+  else
+    res.json({
+      unix: date.getTime(),
+      utc: date.toUTCString(),
+    });
 });
 
 // listen for requests :)
