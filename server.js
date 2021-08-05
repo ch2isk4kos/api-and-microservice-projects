@@ -33,13 +33,22 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date_string", function (req, res) {
-  const paramsDateString = req.params.date_string;
-  const date = new Date(parseInt(paramsDateString));
+  let str = req.params.date_string;
 
-  if (date === "Invalid Date") {
-    res.json({ error: "Invalid Date" });
+  if (new Date(str) === "Invalid Date") res.json({ error: "Invalid Date" });
+
+  if (parseInt(str) > 10000) {
+    let ut = new Date(parseInt(str));
+    res.json({
+      unix: ut.getTime(),
+      utc: ut.toUTCString(),
+    });
   } else {
-    res.json({ unix: date.getTime(), utc: date.toUTCString() });
+    let utc = new Date(str);
+    res.json({
+      unix: utc.getTime(),
+      utc: utc.toUTCString(),
+    });
   }
 });
 
