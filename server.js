@@ -34,7 +34,7 @@ app.get("/api/hello", function (req, res) {
 
 app.get("/api/:date_string", function (req, res) {
   const paramsDateString = req.params.date_string;
-  const date = new Date(paramsDateString);
+  const date = new Date(parseInt(paramsDateString));
 
   if (date === "Invalid Date") {
     res.json({ error: "Invalid Date" });
