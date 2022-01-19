@@ -27,7 +27,7 @@ app.get("/api", function (req, res) {
   res.json({ unix: now.getTime(), utc: now.toUTCString() });
 });
 
-app.get("/api/:date_string", function (req, res) {
+app.get("/api/:date", function (req, res) {
   let str = req.params.date_string;
   // if (str == "Invalid Date" || str == null) res.json({ error: "Invalid Date" });
   console.log(str);
