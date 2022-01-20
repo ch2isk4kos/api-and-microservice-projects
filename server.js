@@ -60,8 +60,6 @@ app.get("/api/timestamp/:date_string", function (req, res) {
 
 // Request Header Parse Microservice
 app.get("/api/whoami", function (req, res) {
-  // console.log("Object.keys(req):", Object.keys(req));
-  // console.log("req.headers:", req.headers);
   res.json({
     ipaddress: req.connection.remoteAddress,
     language: req.headers["accept-language"],
