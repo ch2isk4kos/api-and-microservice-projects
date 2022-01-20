@@ -26,7 +26,11 @@ app.get("/request-header-parser-microservice", function (req, res) {
   res.sendFile(__dirname + "/views/requestHeaderParser.html");
 });
 
-// ROUTE(s)
+app.get("/url-shortener-microservice", function (req, res) {
+  res.sendFile(__dirname + "/views/urlShortener.html");
+});
+
+// API ROUTE(s)
 // your first API endpoint...
 app.get("/api/timestamp", function (req, res) {
   const now = new Date();
@@ -64,6 +68,13 @@ app.get("/api/whoami", function (req, res) {
     ipaddress: req.connection.remoteAddress,
     language: req.headers["accept-language"],
     software: req.headers["user-agent"],
+  });
+});
+
+// URL Shortener Microservice
+app.get("/api/shorturl", function (req, res) {
+  res.json({
+    value: "Something here...",
   });
 });
 
