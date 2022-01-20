@@ -30,7 +30,7 @@ app.get("/request-header-parser-microservice", function (req, res) {
 
 // ROUTE(s)
 // your first API endpoint...
-app.get("/api", function (req, res) {
+app.get("/api/timestamp", function (req, res) {
   // const now = new Date();
   const now = new Date();
   // console.log(now.toLocaleString());
@@ -38,7 +38,7 @@ app.get("/api", function (req, res) {
 });
 
 // Timestamp Microservice
-app.get("/api/:date_string", function (req, res) {
+app.get("/api/timestamp/:date_string", function (req, res) {
   let str = req.params.date_string;
   // if (str == "Invalid Date" || str == null) res.json({ error: "Invalid Date" });
   console.log(str);
@@ -65,7 +65,11 @@ app.get("/api/:date_string", function (req, res) {
 });
 
 // Request Header Parse Microservice
-// app.get("/api/")
+app.get("/api/whoami", function (req, res) {
+  res.json({
+    value: "response data goes here",
+  });
+});
 
 // listen for requests :)
 var listener = app.listen(PORT, function () {
