@@ -14,6 +14,7 @@ app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 2
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
 
+// CONTROLLER(s)
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/views/index.html");
@@ -23,6 +24,11 @@ app.get("/timestamp-microservice", function (req, res) {
   res.sendFile(__dirname + "/views/timestamp.html");
 });
 
+app.get("/request-header-parser-microservice", function (req, res) {
+  res.sendFile(__dirname + "/views/requestHeaderParser.html");
+});
+
+// ROUTE(s)
 // your first API endpoint...
 app.get("/api", function (req, res) {
   // const now = new Date();
@@ -31,6 +37,7 @@ app.get("/api", function (req, res) {
   res.json({ unix: now.getTime(), utc: now.toUTCString() });
 });
 
+// Timestamp Microservice
 app.get("/api/:date_string", function (req, res) {
   let str = req.params.date_string;
   // if (str == "Invalid Date" || str == null) res.json({ error: "Invalid Date" });
@@ -56,6 +63,9 @@ app.get("/api/:date_string", function (req, res) {
     });
   }
 });
+
+// Request Header Parse Microservice
+// app.get("/api/")
 
 // listen for requests :)
 var listener = app.listen(PORT, function () {
