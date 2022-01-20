@@ -4,6 +4,6 @@ An application that displays a series of microservices using Node and Express as
 
 Clone the repo and run `npm start` from your terminal inside of the root directory.<br>
 
-## Projects:
+## Project(s):
 
 ### [Timestamp Microservice](https://www.freecodecamp.org/learn/apis-and-microservices/apis-and-microservices-projects/timestamp-microservice)
