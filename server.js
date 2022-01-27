@@ -1,12 +1,16 @@
 // init project
+var cors = require("cors");
 var express = require("express");
+var mongoose = require("mongoose");
 var app = express();
 
 var PORT = process.env.PORT || 3000;
 
+// DATABASE CONFIG
+mongoose.connect(process.env.MONGODB_URI);
+
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC
-var cors = require("cors");
 app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 204
 
 // http://expressjs.com/en/starter/static-files.html
