@@ -12,8 +12,7 @@ app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 2
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
 
-// CONTROLLER(s)
-// http://expressjs.com/en/starter/basic-routing.html
+// CONTROLLER(s): http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/views/index.html");
 });
@@ -72,13 +71,16 @@ app.get("/api/whoami", function (req, res) {
 });
 
 // URL Shortener Microservice
-app.get("/api/shorturl", function (req, res) {
-  res.json({
-    value: "Something here...",
-  });
+app.post("/api/shorturl/new", function (req, res) {
+  console.log("post request log");
+  console.log("req.params:", req.params);
+  res.json({ success: "post request response" });
 });
 
 // listen for requests :)
 var listener = app.listen(PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
+
+// https://www.youtube.com/watch?v=m7IpGNtoPUY&list=PL3vpzVxKa3PiRLCMmR2FiuIJsSojZZgI8&index=4
+// https://github.com/iarobinson/useful-programmer-portfolio-app
