@@ -218,25 +218,24 @@ app.post("/api/shorturl", (req, res) => {
   console.log("url:", url);
   console.log("host:", host);
 
-  const obj = {
-    original_url: url,
-    short_url: `${id++}`,
-    // short_url: shortid.generate(),
-  };
-
-  urls.push(obj);
-  console.log("urls:", urls);
-
-  console.log("response obj:", obj);
-
   // validate url
   dns.lookup(host, (err, addrs, fam) => {
     console.log("addresses:", addrs);
     console.log("family:", fam);
 
-    if (err) console.log("error:", err.message);
-    if (err) res.json({ error: "invalid url" });
-    else {
+    if (err) {
+      console.log("error:", err.message);
+      return res.json({ error: "invalid url" });
+    } else {
+      const obj = {
+        original_url: url,
+        short_url: `${id++}`,
+        // short_url: shortid.generate(),
+      };
+
+      urls.push(obj);
+      console.log("urls:", urls);
+
       return res.json(obj);
     }
   });
