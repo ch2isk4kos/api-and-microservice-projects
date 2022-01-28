@@ -25,7 +25,7 @@ mongoose
 // middleware
 app.use(cors({ optionsSuccessStatus: 200 }));
 app.use(bodyParser.urlencoded({ extended: false })); // parse form(s)/input(s)
-app.use(bodyParser.json()); // parse application/json
+// app.use(bodyParser.json()); // parse application/json
 app.use(express.static("public"));
 
 // CONTROLLER(s): http://expressjs.com/en/starter/basic-routing.html
@@ -229,7 +229,7 @@ app.post("/api/shorturl", (req, res) => {
     } else {
       const obj = {
         original_url: url,
-        short_url: `${id++}`,
+        short_url: id++,
         // short_url: shortid.generate(),
       };
 
@@ -248,7 +248,7 @@ app.get("/api/shorturl/:short_url", (req, res) => {
   console.log("req.params.short_url:", short_id);
 
   // const url = urls.filter((u) => u.short_url === short_id);
-  const url = urls.find((u) => u.short_url === short_id);
+  const url = urls.find((u) => u.short_url === parseInt(short_id));
   console.log("url:", url);
 
   if (url) return res.redirect(url.original_url);
