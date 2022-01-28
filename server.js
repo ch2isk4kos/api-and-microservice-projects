@@ -112,7 +112,7 @@ app.post("/api/shorturl/new", function (req, res) {
   console.log("shortid:", suffix);
 
   let document = new ShortURL({
-    shortURL: `${__dirname}/api/shorturl/${suffix}`,
+    shortURL: `/api/shorturl/${suffix}`,
     postedURL,
     suffix,
   });
