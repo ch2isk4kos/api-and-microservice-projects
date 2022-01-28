@@ -247,7 +247,6 @@ app.get("/api/shorturl/:short_url", (req, res) => {
   let short_id = req.params.short_url;
   console.log("req.params.short_url:", short_id);
 
-  // const url = urls.filter((u) => u.short_url === short_id);
   let url = urls.find((u) => u.short_url === parseInt(short_id));
   console.log("url:", url);
 
