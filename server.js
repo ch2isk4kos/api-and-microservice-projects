@@ -1,6 +1,7 @@
 // init project
 var bodyParser = require("body-parser");
 var cors = require("cors");
+var dns = require("dns");
 var express = require("express");
 var mongoose = require("mongoose");
 var shortid = require("shortid");
@@ -85,15 +86,17 @@ app.get("/api/whoami", function (req, res) {
   });
 });
 
-// URL Shortener Microservice
+// URL Shortener Microservice v1
 var ShortURL = mongoose.model(
   "ShortURL",
   new mongoose.Schema({
-    short_url: String,
+    id: Number,
     original_url: String,
-    suffix: String,
+    short_id: String,
+    short_url: String,
   })
 );
+// *****************************************************
 
 // var urlSchema = new mongoose.Schema({
 //   short_url: String,
@@ -103,45 +106,96 @@ var ShortURL = mongoose.model(
 
 // var ShortURL = mongoose.model("ShortURL", urlSchema);
 
-app.post("/api/shorturl/new", function (req, res) {
-  console.log("req.body:", req.body);
+// *****************************************************
+// app.post("/api/shorturl/new", function (req, res) {
+//   console.log("req.body:", req.body);
 
-  let original_url = req.body.url;
-  let suffix = shortid.generate();
-  console.log("original_url:", original_url);
-  console.log("shortid:", suffix);
+//   let original_url = req.body.url;
+//   let suffix = shortid.generate();
+//   console.log("original_url:", original_url);
+//   console.log("shortid:", suffix);
 
-  let document = new ShortURL({
-    short_url: `/api/shorturl/${suffix}`,
-    original_url: original_url,
-    suffix: suffix,
-  });
+//   let document = new ShortURL({
+//     short_url: `/api/shorturl/${suffix}`,
+//     original_url: original_url,
+//     suffix: suffix,
+//   });
 
-  document.save((err, doc) => {
-    if (err) console.log(`Error Saving Document: ${err.message}`);
-    res.json({
-      isSaved: true,
-      short_url: document.short_url,
-      original_url: document.original_url,
-      suffix: document.suffix,
-    });
-    console.log("Document persisted successfully");
+//   document.save((err, doc) => {
+//     if (err) console.log(`Error Saving Document: ${err.message}`);
+//     res.json({
+//       isSaved: true,
+//       short_url: document.short_url,
+//       original_url: document.original_url,
+//       suffix: document.suffix,
+//     });
+//     console.log("Document persisted successfully");
+//   });
+// });
+
+// app.get("/api/shorturl/:suffix", function (req, res) {
+//   let suffix = req.params.suffix;
+//   ShortURL.find({ suffix: suffix })
+//     .then((urls) => {
+//       let url = urls[0];
+//       if (url) res.redirect(url.original_url);
+//       else res.json({ error: "invalid url" });
+//     })
+//     .catch((err) =>
+//       console.log(`Error Finding ShortURL Document: ${err.message}`)
+//     );
+// });
+
+// URL Shortener Microservice v2
+app.post("/api/shorturl/new", (req, res) => {
+  let { url } = req.body;
+  console.log("req.body.url:", url);
+  let regex = /^https?:\/\//;
+
+  let host = url.replace(regex, "");
+  console.log("regex:", host);
+
+  // validate url
+  dns.lookup(host, (err, addrs, fam) => {
+    console.log("addresses:", addrs);
+    console.log("family:", fam);
+
+    if (err) console.log("error:", err.message);
+    if (err) res.json({ error: "invalid url" });
+    else {
+      let suffix = shortid.generate();
+      // console.log("original_url:", url);
+      // console.log("shortid:", suffix);
+
+      let document = new ShortURL({
+        original_url: url,
+        short_id: suffix,
+        short_url: `/api/shorturl/${suffix}`,
+      });
+
+      document.save((err, doc) => {
+        if (err) console.log(`Error Saving Document: ${err.message}`);
+
+        res.json({
+          isSaved: true,
+          original_url: document.original_url,
+          short_id: document.short_id,
+          short_url: document.short_url,
+        });
+        console.log("Document persisted successfully");
+        console.log(document);
+      });
+    }
   });
 });
 
-app.get("/api/shorturl/:suffix", function (req, res) {
-  let suffix = req.params.suffix;
-  ShortURL.find({ suffix: suffix })
-    .then((urls) => {
-      let url = urls[0];
-      res.redirect(url.original_url);
-    })
-    .catch((err) =>
-      console.log(`Error Finding ShortURL Document: ${err.message}`)
-    );
+app.get("/api/shorturl/:short_id", async (req, res) => {
+  let suffix = req.params.short_id;
+  let document = await ShortURL.findOne({ short_id: suffix });
+  res.redirect(document.original_url);
 });
 
 // listen for requests :)
-var listener = app.listen(PORT, function () {
+var listener = app.listen(PORT, () => {
   console.log("Listening on port " + listener.address().port);
 });
