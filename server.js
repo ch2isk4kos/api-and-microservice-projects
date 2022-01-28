@@ -89,15 +89,15 @@ app.get("/api/whoami", function (req, res) {
 var ShortURL = mongoose.model(
   "ShortURL",
   new mongoose.Schema({
-    shortURL: String,
-    postedURL: String,
+    short_url: String,
+    original_url: String,
     suffix: String,
   })
 );
 
 // var urlSchema = new mongoose.Schema({
-//   shortURL: String,
-//   postedURL: String,
+//   short_url: String,
+//   original_url: String,
 //   suffix: String,
 // });
 
@@ -106,23 +106,23 @@ var ShortURL = mongoose.model(
 app.post("/api/shorturl/new", function (req, res) {
   console.log("req.body:", req.body);
 
-  let postedURL = req.body.url;
+  let original_url = req.body.url;
   let suffix = shortid.generate();
-  console.log("postedURL:", postedURL);
+  console.log("original_url:", original_url);
   console.log("shortid:", suffix);
 
   let document = new ShortURL({
-    shortURL: `/api/shorturl/${suffix}`,
-    postedURL,
-    suffix,
+    short_url: `/api/shorturl/${suffix}`,
+    original_url: original_url,
+    suffix: suffix,
   });
 
   document.save((err, doc) => {
     if (err) console.log(`Error Saving Document: ${err.message}`);
     res.json({
       isSaved: true,
-      shortURL: document.shortURL,
-      postedURL: document.postedURL,
+      short_url: document.short_url,
+      original_url: document.original_url,
       suffix: document.suffix,
     });
     console.log("Document persisted successfully");
@@ -134,7 +134,7 @@ app.get("/api/shorturl/:suffix", function (req, res) {
   ShortURL.find({ suffix: suffix })
     .then((urls) => {
       let url = urls[0];
-      res.redirect(url.postedURL);
+      res.redirect(url.original_url);
     })
     .catch((err) =>
       console.log(`Error Finding ShortURL Document: ${err.message}`)
