@@ -211,7 +211,7 @@ let id = 0;
 
 // URL Shortener Microservice v3
 app.post("/api/shorturl", (req, res) => {
-  let { url } = req.body;
+  let url = req.body;
   let regex = /^https?:\/\//;
 
   let host = url.replace(regex, "");
@@ -244,7 +244,7 @@ app.post("/api/shorturl", (req, res) => {
 app.get("/api/shorturl/:short_url", (req, res) => {
   console.log("req.params:", req.params);
 
-  let { short_id } = req.params.short_url;
+  let short_id = req.params.short_url;
   console.log("req.params.short_url:", short_id);
 
   // const url = urls.filter((u) => u.short_url === short_id);
