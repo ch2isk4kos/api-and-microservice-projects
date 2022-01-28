@@ -147,7 +147,7 @@ var ShortURL = mongoose.model(
 // });
 
 // URL Shortener Microservice v2
-app.post("/api/shorturl/new", (req, res) => {
+app.post("/api/shorturl", async (req, res) => {
   let { url } = req.body;
   console.log("req.body.url:", url);
   let regex = /^https?:\/\//;
@@ -164,8 +164,6 @@ app.post("/api/shorturl/new", (req, res) => {
     if (err) res.json({ error: "invalid url" });
     else {
       let suffix = shortid.generate();
-      // console.log("original_url:", url);
-      // console.log("shortid:", suffix);
 
       let document = new ShortURL({
         original_url: url,
@@ -176,23 +174,26 @@ app.post("/api/shorturl/new", (req, res) => {
       document.save((err, doc) => {
         if (err) console.log(`Error Saving Document: ${err.message}`);
 
-        res.json({
+        console.log("Document persisted successfully");
+        console.log(document);
+
+        return res.json({
           isSaved: true,
           original_url: document.original_url,
           short_id: document.short_id,
           short_url: document.short_url,
         });
-        console.log("Document persisted successfully");
-        console.log(document);
       });
     }
   });
 });
 
 app.get("/api/shorturl/:short_id", async (req, res) => {
-  let suffix = req.params.short_id;
-  let document = await ShortURL.findOne({ short_id: suffix });
-  res.redirect(document.original_url);
+  let id = req.params.short_id;
+  let document = await ShortURL.findOne({ short_id: id });
+
+  if (document) return res.redirect(document.original_url);
+  else return res.json({ error: "ERROR: cannot find document" });
 });
 
 // listen for requests :)
