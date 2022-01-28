@@ -244,11 +244,11 @@ app.post("/api/shorturl", (req, res) => {
 app.get("/api/shorturl/:short_url", (req, res) => {
   console.log("req.params:", req.params);
 
-  const short_id = req.params.short_url;
+  let { short_id } = req.params.short_url;
   console.log("req.params.short_url:", short_id);
 
   // const url = urls.filter((u) => u.short_url === short_id);
-  const url = urls.find((u) => u.short_url === parseInt(short_id));
+  let url = urls.find((u) => u.short_url === parseInt(short_id));
   console.log("url:", url);
 
   if (url) return res.redirect(url.original_url);
