@@ -1,19 +1,30 @@
 // init project
+var bodyParser = require("body-parser");
 var cors = require("cors");
 var express = require("express");
 var mongoose = require("mongoose");
+var shortid = require("shortid");
 var app = express();
+require("dotenv").config();
 
 var PORT = process.env.PORT || 3000;
+var MONGODB_URI = process.env.MONGODB_URI;
 
 // DATABASE CONFIG
-mongoose.connect(process.env.MONGODB_URI);
+const mongooseConfigOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
 
-// enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
-// so that your API is remotely testable by FCC
-app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 204
+mongoose
+  .connect(MONGODB_URI, mongooseConfigOptions)
+  .then(() => console.log("Connected to Atlas"))
+  .catch((err) => console.log(`MONGO ATLAS ERROR: ${err.message}`));
 
-// http://expressjs.com/en/starter/static-files.html
+// middleware
+app.use(cors({ optionsSuccessStatus: 200 }));
+app.use(bodyParser.urlencoded({ extended: false })); // parse form(s)/input(s)
+app.use(bodyParser.json()); // parse application/json
 app.use(express.static("public"));
 
 // CONTROLLER(s): http://expressjs.com/en/starter/basic-routing.html
@@ -34,13 +45,13 @@ app.get("/url-shortener-microservice", function (req, res) {
 });
 
 // API ROUTE(s)
-// your first API endpoint...
+
+// Timestamp Microservice
 app.get("/api/timestamp", function (req, res) {
   const now = new Date();
   res.json({ unix: now.getTime(), utc: now.toUTCString() });
 });
 
-// Timestamp Microservice
 app.get("/api/timestamp/:date_string", function (req, res) {
   let str = req.params.date_string;
   let s = parseInt(str);
@@ -75,16 +86,62 @@ app.get("/api/whoami", function (req, res) {
 });
 
 // URL Shortener Microservice
+var ShortURL = mongoose.model(
+  "ShortURL",
+  new mongoose.Schema({
+    shortURL: String,
+    postedURL: String,
+    suffix: String,
+  })
+);
+
+// var urlSchema = new mongoose.Schema({
+//   shortURL: String,
+//   postedURL: String,
+//   suffix: String,
+// });
+
+// var ShortURL = mongoose.model("ShortURL", urlSchema);
+
 app.post("/api/shorturl/new", function (req, res) {
-  console.log("post request log");
-  console.log("req.params:", req.params);
-  res.json({ success: "post request response" });
+  console.log("req.body:", req.body);
+
+  let postedURL = req.body.url;
+  let suffix = shortid.generate();
+  console.log("postedURL:", postedURL);
+  console.log("shortid:", suffix);
+
+  let document = new ShortURL({
+    shortURL: `${__dirname}/api/shorturl/${suffix}`,
+    postedURL,
+    suffix,
+  });
+
+  document.save((err, doc) => {
+    if (err) console.log(`Error Saving Document: ${err.message}`);
+    res.json({
+      isSaved: true,
+      shortURL: document.shortURL,
+      postedURL: document.postedURL,
+      suffix: document.suffix,
+    });
+    console.log("Document persisted successfully");
+  });
+});
+
+app.get("/api/shorturl/:suffix", function (req, res) {
+  let suffix = req.params.suffix;
+  ShortURL.find({ suffix: suffix })
+    .then((urls) => {
+      let url = urls[0];
+      res.redirect(url.postedURL);
+    })
+    .catch((err) =>
+      console.log(`Error Finding ShortURL Document: ${err.message}`)
+    );
 });
 
 // listen for requests :)
 var listener = app.listen(PORT, function () {
-  console.log("Your app is listening on port " + listener.address().port);
+  console.log("Listening on port " + listener.address().port);
 });
-
-// https://www.youtube.com/watch?v=m7IpGNtoPUY&list=PL3vpzVxKa3PiRLCMmR2FiuIJsSojZZgI8&index=4
-// https://github.com/iarobinson/useful-programmer-portfolio-app
