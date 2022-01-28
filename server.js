@@ -211,7 +211,7 @@ let id = 0;
 
 // URL Shortener Microservice v3
 app.post("/api/shorturl", (req, res) => {
-  let url = req.body;
+  let { url } = req.body;
   let regex = /^https?:\/\//;
 
   let host = url.replace(regex, "");
