@@ -210,7 +210,7 @@ const urls = [];
 let id = 0;
 
 // URL Shortener Microservice v3
-app.post("/api/shorturl", (req, res) => {
+app.post("/api/shorturl", (req, res, done) => {
   let { url } = req.body;
   let regex = /^https?:\/\//;
 
@@ -229,7 +229,7 @@ app.post("/api/shorturl", (req, res) => {
     } else {
       const obj = {
         original_url: url,
-        short_url: id++,
+        short_url: ++id,
         // short_url: shortid.generate(),
       };
 
