@@ -93,7 +93,9 @@ let id = 0;
 
 app.post("/api/shorturl", (req, res, done) => {
   let { url } = req.body;
-  let regex = /^(http|https)?:\/\//;
+  // let regex = /^(http|https)?:\/\//;
+  // let regex = /https:\/\/www.|http:\/\/www./g;
+  let regex = /^(ftp|http|https):\/\/[^ "]+$/;
 
   let host = url.replace(regex, "");
   console.log("url:", url);
