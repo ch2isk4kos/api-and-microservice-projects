@@ -293,15 +293,19 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   let user = users.find((u) => u._id === _id);
 
   if (!date) {
-    let today = new Date();
-    date = today.toLocaleDateString();
+    date = new Date();
+    // let today = new Date();
+    // date = today.toLocaleDateString();
+  } else {
+    date = new Date(date);
   }
 
-  user.exercises = [{ date, description, duration }];
+  let log = { date, description, duration };
+  user.log = [log];
 
   console.log("updated user:", user);
 
-  if (user && user.exercises) return res.json(user);
+  if (user && user.log) return res.json(user);
   else console.log("ERROR: could not save exercise");
 });
 
