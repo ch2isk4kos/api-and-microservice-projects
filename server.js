@@ -45,6 +45,10 @@ app.get("/url-shortener-microservice", function (req, res) {
   res.sendFile(__dirname + "/views/urlShortener.html");
 });
 
+app.get("/exercise-tracker-microservice", function (req, res) {
+  res.sendFile(__dirname + "/views/exerciseTracker.html");
+});
+
 // API ROUTE(s)
 
 // Timestamp Microservice
