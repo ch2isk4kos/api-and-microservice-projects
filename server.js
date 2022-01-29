@@ -301,7 +301,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 
   console.log("updated user:", user);
 
-  if (user && user.exercises) res.json(user);
+  if (user && user.exercises) return res.json(user);
   else console.log("ERROR: could not save exercise");
 });
 
