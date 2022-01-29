@@ -278,6 +278,10 @@ app.post("/api/users", (req, res) => {
   else console.log(`ERROR: saving user: ${err.message}`);
 });
 
+app.get("/api/users", (req, res) => {
+  res.send(users);
+});
+
 // listen for requests :)
 var listener = app.listen(PORT, () => {
   console.log("Listening on port " + listener.address().port);
