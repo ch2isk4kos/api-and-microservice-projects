@@ -86,7 +86,57 @@ app.get("/api/whoami", function (req, res) {
   });
 });
 
-// URL Shortener Microservice v1
+// URL SHORTENER MICROSERVICE V3
+
+const urls = [];
+let id = 0;
+
+app.post("/api/shorturl", (req, res, done) => {
+  let { url } = req.body;
+  let regex = /^(http|https)?:\/\//;
+
+  let host = url.replace(regex, "");
+  console.log("url:", url);
+  console.log("host:", host);
+
+  // validate url
+  dns.lookup(host, (err, addrs, fam) => {
+    console.log("addresses:", addrs);
+    console.log("family:", fam);
+
+    if (err) {
+      console.log("error:", err.message);
+      return res.json({ error: "invalid url" });
+    } else {
+      const obj = {
+        original_url: url,
+        short_url: ++id,
+        // short_url: shortid.generate(),
+      };
+
+      urls.push(obj);
+      console.log("urls:", urls);
+
+      return res.json(obj);
+    }
+  });
+});
+
+app.get("/api/shorturl/:short_url", (req, res) => {
+  console.log("req.params:", req.params);
+
+  let short_id = req.params.short_url;
+  console.log("req.params.short_url:", short_id);
+
+  let url = urls.find((u) => u.short_url === parseInt(short_id));
+  console.log("url:", url);
+
+  if (url) return res.redirect(url.original_url);
+  else return res.json({ error: "invalid url" });
+});
+
+// URL SHORTENER MICROSERVICE V1
+
 // var ShortURL = mongoose.model(
 //   "ShortURL",
 //   new mongoose.Schema({
@@ -145,7 +195,8 @@ app.get("/api/whoami", function (req, res) {
 //     );
 // });
 
-// URL Shortener Microservice v2
+// URL SHORTENER MICROSERVICE V2
+
 // var ShortURL = mongoose.model(
 //   "ShortURL",
 //   new mongoose.Schema({
@@ -205,54 +256,6 @@ app.get("/api/whoami", function (req, res) {
 //   if (document) return res.redirect(document.original_url);
 //   else return res.json({ error: "ERROR: cannot find document" });
 // });
-
-const urls = [];
-let id = 0;
-
-// URL Shortener Microservice v3
-app.post("/api/shorturl", (req, res, done) => {
-  let { url } = req.body;
-  let regex = /^(http|https)?:\/\//;
-
-  let host = url.replace(regex, "");
-  console.log("url:", url);
-  console.log("host:", host);
-
-  // validate url
-  dns.lookup(host, (err, addrs, fam) => {
-    console.log("addresses:", addrs);
-    console.log("family:", fam);
-
-    if (err) {
-      console.log("error:", err.message);
-      return res.json({ error: "invalid url" });
-    } else {
-      const obj = {
-        original_url: url,
-        short_url: ++id,
-        // short_url: shortid.generate(),
-      };
-
-      urls.push(obj);
-      console.log("urls:", urls);
-
-      return res.json(obj);
-    }
-  });
-});
-
-app.get("/api/shorturl/:short_url", (req, res) => {
-  console.log("req.params:", req.params);
-
-  let short_id = req.params.short_url;
-  console.log("req.params.short_url:", short_id);
-
-  let url = urls.find((u) => u.short_url === parseInt(short_id));
-  console.log("url:", url);
-
-  if (url) return res.redirect(url.original_url);
-  else return res.json({ error: "invalid url" });
-});
 
 // listen for requests :)
 var listener = app.listen(PORT, () => {
