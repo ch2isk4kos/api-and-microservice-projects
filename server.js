@@ -262,7 +262,10 @@ app.get("/api/shorturl/:short_url", (req, res) => {
 // });
 
 let _id = 0;
-const users = [];
+const users = [
+  { _id: 500, username: "chris" },
+  { _id: 501, username: "mcgill" },
+];
 
 // EXERCISE TRACKER MICROSERVICE
 app.post("/api/users", (req, res) => {
@@ -279,7 +282,17 @@ app.post("/api/users", (req, res) => {
 });
 
 app.get("/api/users", (req, res) => {
-  return res.json(users);
+  const arr = [];
+
+  users.forEach((user) => {
+    const u = {
+      _id: user._id,
+      username: user.username,
+    };
+    arr.push(u);
+  });
+
+  if (arr.length > -1) res.send(arr);
 });
 
 // listen for requests :)
