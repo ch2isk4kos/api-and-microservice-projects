@@ -91,10 +91,8 @@ app.get("/api/whoami", function (req, res) {
 const urls = [];
 let id = 0;
 
-app.post("/api/shorturl", (req, res, done) => {
+app.post("/api/shorturl", (req, res) => {
   let { url } = req.body;
-  // let regex = /^(http|https)?:\/\//;
-  // let regex = /https:\/\/www.|http:\/\/www./g;
   let regex = /^(ftp|http|https):\/\/[^ "]+$/;
 
   let host = url.replace(regex, "");
