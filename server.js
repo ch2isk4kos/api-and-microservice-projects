@@ -261,6 +261,23 @@ app.get("/api/shorturl/:short_url", (req, res) => {
 //   else return res.json({ error: "ERROR: cannot find document" });
 // });
 
+let _id = 0;
+const users = [];
+
+// EXERCISE TRACKER MICROSERVICE
+app.post("/api/users", (req, res) => {
+  const user = {
+    _id: _id++,
+    username: req.body.username,
+  };
+
+  users.push(user);
+  console.log("users:", users);
+
+  if (user) res.json(user);
+  else console.log(`ERROR: saving user: ${err.message}`);
+});
+
 // listen for requests :)
 var listener = app.listen(PORT, () => {
   console.log("Listening on port " + listener.address().port);
