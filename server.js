@@ -351,17 +351,16 @@ app.get("/api/users/:_id/logs", (req, res) => {
   console.log("_id.logs -> from:", from);
 
   let user = users.find((u) => u._id === _id);
-  console.log("user:", user);
   let logs = user.log;
 
   let fromDate = new Date(from);
   let toDate = new Date(to);
 
   if (from) {
-    logs = logs.filter((log) => log.date >= fromDate);
+    logs = logs.filter((log) => log.date >= fromDate.toDateString());
   }
   if (to) {
-    logs = logs.filter((log) => log.date <= toDate);
+    logs = logs.filter((log) => log.date <= toDate.toDateString());
   }
   if (limit) {
     logs = logs.slice(0, +limit);
@@ -373,8 +372,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
     return res.json({
       _id: user._id,
       username: user.username,
-      from: fromDate.toDateString(),
-      to: toDate.toDateString(),
+      // from: fromDate.toDateString(),
+      // to: toDate.toDateString(),
       count: user.count,
       log: logs.map((log) => {
         return {
