@@ -358,7 +358,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
     logs = logs.filter((log) => {
       console.log("log.date:", log.date);
       console.log("fromDate:", fromDate);
-      log.date >= fromDate.toDate;
+      log.date >= fromDate.toDateString();
     });
   }
   if (to) {
@@ -366,7 +366,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
     logs = logs.filter((log) => {
       console.log("log.date:", log.date);
       console.log("toDate:", toDate);
-      log.date >= fromDate.toDate;
+      log.date >= toDate.toDateString();
     });
   }
   if (limit) {
