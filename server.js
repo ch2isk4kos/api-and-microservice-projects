@@ -49,6 +49,10 @@ app.get("/exercise-tracker-microservice", function (req, res) {
   res.sendFile(__dirname + "/views/exerciseTracker.html");
 });
 
+app.get("/file-metadata-microservice", function (req, res) {
+  res.sendFile(__dirname + "/views/fileMetadata.html");
+});
+
 // API ROUTE(s)
 
 // Timestamp Microservice
@@ -371,6 +375,12 @@ app.get("/api/users/:id/logs", (req, res) => {
 
   if (user) return res.json(user);
   else return res.status(400).send("User Not Found");
+});
+
+app.post("/api/fileanalyse", (req, res) => {
+  console.log("req.body:", req.body);
+  console.log("req.params:", req.params);
+  console.log("req.query:", req.query);
 });
 
 // listen for requests :)
