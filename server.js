@@ -283,7 +283,7 @@ app.post("/api/users", (req, res) => {
   users.push(user);
   console.log("users:", users);
 
-  if (user) res.json(user);
+  if (user) return res.json(user);
   else console.log(`ERROR: saving user: ${err.message}`);
 });
 
@@ -299,8 +299,24 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   let { _id } = req.params;
   let { date, description, duration } = req.body;
 
+  let exercise = {
+    description,
+    duration,
+    date,
+  };
+  console.log("exercise:", exercise);
+
   let user = users.find((u) => u._id === _id);
-  console.log("user found:", user);
+
+  if (!user) {
+    return res.status(400).send("User not found.");
+  } else if (user && user.log) {
+    user.log.push(exercise);
+    user.count++;
+  } else if (user && !user.log) {
+    user.log = [exercise];
+    user.count = 1;
+  }
 
   if (!date) {
     date = new Date();
@@ -308,14 +324,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     date = new Date(date);
   }
 
-  // let exercise = {
-  //   _id: user._id,
-  //   username: user.username,
-  //   description,
-  //   duration,
-  //   date,
-  // };
-  // console.log("exercise:", exercise);
+  console.log("user:", user);
 
   if (user) {
     return res.json({
@@ -328,6 +337,20 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   } else {
     console.log("ERROR: could not save exercise");
   }
+});
+
+app.get("/api/users/:_id/logs", (req, res) => {
+  console.log("logs -> req.body:", req.body);
+  console.log("logs -> req.params:", req.params);
+  console.log("logs -> req.query:", req.query);
+  let { _id } = req.params;
+
+  let user = users.find((u) => u._id === _id);
+  console.log("user:", user);
+
+  const count = user.count;
+
+  return res.json({ count });
 });
 
 // listen for requests :)
