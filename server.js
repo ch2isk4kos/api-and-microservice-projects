@@ -349,6 +349,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
   let user = users.find((u) => u._id === _id);
   console.log("user:", user);
   let logs = user.log;
+
   let fromDate = new Date(from);
   let toDate = new Date(to);
 
@@ -375,7 +376,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
         return {
           description: log.description,
           duration: log.duration,
-          date: log.date,
+          date: log.date.toDateString(),
         };
       }),
     });
