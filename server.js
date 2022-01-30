@@ -343,8 +343,12 @@ app.get("/api/users/:_id/logs", (req, res) => {
   console.log("_id.logs -> req.body:", req.body);
   console.log("_id.logs -> req.params:", req.params);
   console.log("_id.logs -> req.query:", req.query);
+
   let { _id } = req.params;
   let { to, from, limit } = req.query;
+
+  console.log("_id.logs -> to:", to);
+  console.log("_id.logs -> from:", from);
 
   let user = users.find((u) => u._id === _id);
   console.log("user:", user);
