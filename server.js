@@ -361,7 +361,7 @@ app.get("/api/users/:id/logs", (req, res) => {
   // if (user) return res.json(user);
   // else return res.status(400).send("User not found");
   if (user) {
-    let logs = user.logs;
+    let logs = user.log;
     return res.json({
       _id: user._id,
       username: user.username,
