@@ -340,29 +340,17 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 });
 
 app.get("/api/users/:_id/logs", (req, res) => {
-  console.log("_id.logs -> req.body:", req.body);
-  console.log("_id.logs -> req.params:", req.params);
-  console.log("_id.logs -> req.query:", req.query);
-
   let { _id } = req.params;
   let { to, from, limit } = req.query;
-
-  console.log("_id.logs -> to:", to);
-  console.log("_id.logs -> from:", from);
 
   let user = users.find((u) => u._id === _id);
   let logs = user.log;
 
-  // let fromDate = new Date(from);
-  // let toDate = new Date(to);
-
   if (from !== undefined) {
-    // logs = logs.filter((log) => log.date >= fromDate.toDateString());
     let fromDate = new Date(from);
     logs = logs.filter((log) => new Date(log.date) >= fromDate);
   }
   if (to !== undefined) {
-    // logs = logs.filter((log) => log.date <= toDate.toDateString());
     let toDate = new Date(to);
     logs = logs.filter((log) => new Date(log.date) <= toDate);
   }
@@ -370,14 +358,10 @@ app.get("/api/users/:_id/logs", (req, res) => {
     logs = logs.slice(0, limit);
   }
 
-  // if (user) return res.json(user);
-  // else return res.status(400).send("User Not Found");
   if (user) {
     return res.json({
       _id: user._id,
       username: user.username,
-      // from: fromDate.toDateString(),
-      // to: toDate.toDateString(),
       count: user.count,
       log: logs.map((log) => {
         return {
@@ -391,13 +375,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
 });
 
 app.get("/api/users/:id/logs", (req, res) => {
-  console.log("id.logs -> req.body:", req.body);
-  console.log("id.logs -> req.params:", req.params);
-  console.log("id.logs -> req.query:", req.query);
   let { id } = req.params;
-
   let user = users.find((u) => u._id === id);
-  console.log("user:", user);
 
   if (user) return res.json(user);
   else return res.status(400).send("User Not Found");
