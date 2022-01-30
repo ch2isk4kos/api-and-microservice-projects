@@ -358,22 +358,10 @@ app.get("/api/users/:_id/logs", (req, res) => {
   let toDate = new Date(to);
 
   if (from) {
-    // logs = logs.filter((log) => log.date >= fromDate.toDate);
-    logs = logs.filter((log) => {
-      console.log("log.date:", log.date);
-      console.log("fromDate:", fromDate);
-      log.date >= from.toDateString();
-      // log.date >= fromDate.toDateString();
-    });
+    logs = logs.filter((log) => log.date >= fromDate);
   }
   if (to) {
-    // logs = logs.filter((log) => log.date <= toDate);
-    logs = logs.filter((log) => {
-      console.log("log.date:", log.date);
-      console.log("toDate:", toDate);
-      log.date >= to.toDateString();
-      // log.date >= toDate.toDateString();
-    });
+    logs = logs.filter((log) => log.date <= toDate);
   }
   if (limit) {
     logs = logs.slice(0, +limit);
