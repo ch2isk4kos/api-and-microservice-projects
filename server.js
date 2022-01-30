@@ -262,7 +262,16 @@ app.get("/api/shorturl/:short_url", (req, res) => {
 // });
 
 let _id = 0;
-const users = [];
+const users = [
+  {
+    _id: `-1`,
+    username: "Chris",
+  },
+  {
+    _id: `-2`,
+    username: "Mcgill",
+  },
+];
 
 // EXERCISE TRACKER MICROSERVICE
 app.post("/api/users", (req, res) => {
@@ -291,21 +300,29 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   let { date, description, duration } = req.body;
 
   let user = users.find((u) => u._id === _id);
+  console.log("user found:", user);
 
   if (!date) {
-    date = new Date();
-    // let today = new Date();
-    // date = today.toLocaleDateString();
-  } else {
-    date = new Date(date);
+    let today = new Date();
+    date = today.toDateString();
   }
 
-  let log = { date, description, duration };
-  user.log = [log];
+  let exercise = {
+    _id: user._id,
+    username: user.username,
+    description,
+    duration,
+    date,
+  };
+  console.log("exercise:", exercise);
 
-  console.log("updated user:", user);
+  if (!user.log) {
+    user.log = [exercise];
+  } else {
+    user.log.push(exercise);
+  }
 
-  if (user && user.log) return res.json(user);
+  if (user && exercise) res.json(exercise);
   else console.log("ERROR: could not save exercise");
 });
 
