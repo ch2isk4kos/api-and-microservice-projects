@@ -303,8 +303,13 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   console.log("user found:", user);
 
   if (!date) {
-    let today = new Date();
-    date = today.toDateString();
+    // let today = new Date();
+    // date = today.toDateString();
+    date = new Date();
+  } else {
+    // let today = new Date(date);
+    // date = today.toDateString();
+    date = new Date(date);
   }
 
   // let exercise = {
@@ -328,7 +333,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
       username: user.username,
       description,
       duration: parseInt(duration),
-      date,
+      date: date.toDateString(),
       _id: user._id,
     });
   } else {
