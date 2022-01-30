@@ -269,7 +269,7 @@ const users = [
     username: "Chris",
     count: 2,
     log: [
-      { description: "running", duration: "40", date: "" },
+      { description: "running", duration: "40", date: "Sat " },
       { description: "legs", duration: "40", date: "" },
     ],
   },
@@ -345,9 +345,9 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 });
 
 app.get("/api/users/:_id/logs", (req, res) => {
-  console.log("logs -> req.body:", req.body);
-  console.log("logs -> req.params:", req.params);
-  console.log("logs -> req.query:", req.query);
+  console.log("_id.logs -> req.body:", req.body);
+  console.log("_id.logs -> req.params:", req.params);
+  console.log("_id.logs -> req.query:", req.query);
   let { _id } = req.params;
 
   let user = users.find((u) => u._id === _id);
@@ -358,6 +358,9 @@ app.get("/api/users/:_id/logs", (req, res) => {
 });
 
 app.get("/api/users/:id/logs", (req, res) => {
+  console.log("id.logs -> req.body:", req.body);
+  console.log("id.logs -> req.params:", req.params);
+  console.log("id.logs -> req.query:", req.query);
   let { id } = req.params;
 
   let user = users.find((u) => u._id === id);
@@ -371,14 +374,15 @@ app.get("/api/users/:id/logs", (req, res) => {
     return res.json({
       _id: user._id,
       username: user.username,
-      count,
-      log: logs.map((log) => {
-        return {
-          description: log.description,
-          duration: parseInt(log.duration),
-          date: log.date.toDateString(),
-        };
-      }),
+      count: user.count,
+      log: user.log,
+      // log: logs.map((log) => {
+      //   return {
+      //     description: log.description,
+      //     duration: parseInt(log.duration),
+      //     date: log.date.toDateString(),
+      //   };
+      // }),
     });
   } else return res.status(400).send("User not found");
 });
