@@ -267,11 +267,6 @@ const users = [
   {
     _id: `-1`,
     username: "Chris",
-    count: 2,
-    log: [
-      { description: "running", duration: "40", date: "Sat " },
-      { description: "legs", duration: "40", date: "" },
-    ],
   },
   {
     _id: `-2`,
@@ -303,15 +298,20 @@ app.get("/api/users", (req, res) => {
 app.post("/api/users/:_id/exercises", (req, res) => {
   let { _id } = req.params;
   let { date, description, duration } = req.body;
+  let user = users.find((u) => u._id === _id);
+
+  if (!date) {
+    date = new Date();
+  } else {
+    date = new Date(date);
+  }
 
   let exercise = {
     description,
-    duration,
-    date,
+    duration: parseInt(duration),
+    date: date.toDateString(),
   };
   console.log("exercise:", exercise);
-
-  let user = users.find((u) => u._id === _id);
 
   if (!user) {
     return res.status(400).send("User not found.");
@@ -323,20 +323,14 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     user.count = 1;
   }
 
-  if (!date) {
-    date = new Date();
-  } else {
-    date = new Date(date);
-  }
-
   console.log("user:", user);
 
-  if (user) {
+  if (user && exercise) {
     return res.json({
       username: user.username,
       description,
-      duration: parseInt(duration),
-      date: date.toDateString(),
+      duration: exercise.duration,
+      date: exercise.date,
       _id: user._id,
     });
   } else {
@@ -375,14 +369,13 @@ app.get("/api/users/:id/logs", (req, res) => {
       _id: user._id,
       username: user.username,
       count: user.count,
-      log: user.log,
-      // log: logs.map((log) => {
-      //   return {
-      //     description: log.description,
-      //     duration: parseInt(log.duration),
-      //     date: log.date.toDateString(),
-      //   };
-      // }),
+      log: logs.map((log) => {
+        return {
+          description: log.description,
+          duration: parseInt(log.duration),
+          date: log.date.toDateString(),
+        };
+      }),
     });
   } else return res.status(400).send("User not found");
 });
