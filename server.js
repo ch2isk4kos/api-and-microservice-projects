@@ -362,7 +362,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
     logs = logs.filter((log) => {
       console.log("log.date:", log.date);
       console.log("fromDate:", fromDate);
-      log.date >= fromDate.toDateString();
+      log.date >= from.toDateString();
+      // log.date >= fromDate.toDateString();
     });
   }
   if (to) {
@@ -370,7 +371,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
     logs = logs.filter((log) => {
       console.log("log.date:", log.date);
       console.log("toDate:", toDate);
-      log.date >= toDate.toDateString();
+      log.date >= to.toDateString();
+      // log.date >= toDate.toDateString();
     });
   }
   if (limit) {
