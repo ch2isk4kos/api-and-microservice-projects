@@ -307,23 +307,33 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     date = today.toDateString();
   }
 
-  let exercise = {
-    _id: user._id,
-    username: user.username,
-    description,
-    duration,
-    date,
-  };
-  console.log("exercise:", exercise);
+  // let exercise = {
+  //   _id: user._id,
+  //   username: user.username,
+  //   description,
+  //   duration,
+  //   date,
+  // };
+  // console.log("exercise:", exercise);
 
-  if (!user.log) {
-    user.log = [exercise];
+  // if (!user.log) {
+  //   user.log = [exercise];
+  // } else {
+  //   user.log.push(exercise);
+  // }
+
+  // if (user && exercise) return res.json({ exercise });
+  if (user) {
+    return res.json({
+      username: user.username,
+      description,
+      duration,
+      date,
+      _id: user._id,
+    });
   } else {
-    user.log.push(exercise);
+    console.log("ERROR: could not save exercise");
   }
-
-  if (user && exercise) res.json(exercise);
-  else console.log("ERROR: could not save exercise");
 });
 
 // listen for requests :)
