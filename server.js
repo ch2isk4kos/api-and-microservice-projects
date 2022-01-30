@@ -263,16 +263,7 @@ app.get("/api/shorturl/:short_url", (req, res) => {
 
 // EXERCISE TRACKER MICROSERVICE
 let _id = 0;
-const users = [
-  {
-    _id: `-1`,
-    username: "Chris",
-  },
-  {
-    _id: `-2`,
-    username: "Mcgill",
-  },
-];
+const users = [];
 
 app.post("/api/users", (req, res) => {
   const user = {
