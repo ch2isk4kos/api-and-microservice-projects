@@ -343,13 +343,40 @@ app.get("/api/users/:_id/logs", (req, res) => {
   console.log("_id.logs -> req.body:", req.body);
   console.log("_id.logs -> req.params:", req.params);
   console.log("_id.logs -> req.query:", req.query);
-  let { _id } = req.params;
+  let { _id, to, from, limit } = req.params;
 
   let user = users.find((u) => u._id === _id);
   console.log("user:", user);
+  let logs = user.log;
+  let fromDate = new Date(from);
+  let toDate = new Date(to);
 
-  if (user) return res.json(user);
-  else return res.status(400).send("User Not Found");
+  if (from) {
+    logs = logs.filter((log) => log.date >= fromDate);
+  }
+  if (to) {
+    logs = logs.filter((log) => log.date <= toDate);
+  }
+  if (limit) {
+    logs = logs.slice(0, +limit);
+  }
+
+  // if (user) return res.json(user);
+  // else return res.status(400).send("User Not Found");
+  if (user) {
+    return res.json({
+      _id: user._id,
+      username: user.username,
+      count: user.count,
+      log: logs.map((log) => {
+        return {
+          description: log.description,
+          duration: log.duration,
+          date: log.date,
+        };
+      }),
+    });
+  } else return res.status(400).send("User Not Found");
 });
 
 app.get("/api/users/:id/logs", (req, res) => {
@@ -361,22 +388,23 @@ app.get("/api/users/:id/logs", (req, res) => {
   let user = users.find((u) => u._id === id);
   console.log("user:", user);
 
-  if (user) {
-    let logs = user.log;
-    console.log("users/:id/logs", logs);
-    return res.json({
-      _id: user._id,
-      username: user.username,
-      count: user.count,
-      log: logs.map((log) => {
-        return {
-          description: log.description,
-          duration: parseInt(log.duration),
-          date: log.date.toDateString(),
-        };
-      }),
-    });
-  } else return res.status(400).send("User Not Found");
+  // if (user) {
+  //   let logs = user.log;
+  //   return res.json({
+  //     _id: user._id,
+  //     username: user.username,
+  //     count: user.count,
+  //     log: logs.map((log) => {
+  //       return {
+  //         description: log.description,
+  //         duration: parseInt(log.duration),
+  //         date: log.date.toDateString(),
+  //       };
+  //     }),
+  //   });
+  // } else return res.status(400).send("User Not Found");
+  if (user) return res.json(user);
+  else return res.status(400).send("User Not Found");
 });
 
 // listen for requests :)
