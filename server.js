@@ -356,13 +356,13 @@ app.get("/api/users/:_id/logs", (req, res) => {
   let fromDate = new Date(from);
   let toDate = new Date(to);
 
-  if (from) {
+  if (from !== undefined) {
     logs = logs.filter((log) => log.date >= fromDate.toDateString());
   }
-  if (to) {
+  if (to !== undefined) {
     logs = logs.filter((log) => log.date <= toDate.toDateString());
   }
-  if (limit) {
+  if (limit !== undefined) {
     logs = logs.slice(0, +limit);
   }
 
