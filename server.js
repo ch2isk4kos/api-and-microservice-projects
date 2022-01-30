@@ -358,23 +358,23 @@ app.get("/api/users/:id/logs", (req, res) => {
   let user = users.find((u) => u._id === id);
   console.log("user:", user);
 
-  if (user) return res.json(user);
-  else return res.status(400).send("User not found");
-  // if (user) {
-  //   let logs = user.logs;
-  //   return res.json({
-  //     _id: user._id,
-  //     username: user.username,
-  //     count,
-  //     log: logs.map((log) => {
-  //       return {
-  //         description: log.description,
-  //         duration: log.duration,
-  //         date: log.date,
-  //       };
-  //     }),
-  //   });
-  // } else return res.status(400).send("User not found");
+  // if (user) return res.json(user);
+  // else return res.status(400).send("User not found");
+  if (user) {
+    let logs = user.logs;
+    return res.json({
+      _id: user._id,
+      username: user.username,
+      count,
+      log: logs.map((log) => {
+        return {
+          description: log.description,
+          duration: log.duration,
+          date: log.date,
+        };
+      }),
+    });
+  } else return res.status(400).send("User not found");
 });
 
 // listen for requests :)
