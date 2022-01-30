@@ -368,6 +368,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
     return res.json({
       _id: user._id,
       username: user.username,
+      from: fromDate.toDateString(),
+      to: toDate.toDateString(),
       count: user.count,
       log: logs.map((log) => {
         return {
