@@ -261,6 +261,7 @@ app.get("/api/shorturl/:short_url", (req, res) => {
 //   else return res.json({ error: "ERROR: cannot find document" });
 // });
 
+// EXERCISE TRACKER MICROSERVICE
 let _id = 0;
 const users = [
   {
@@ -273,7 +274,6 @@ const users = [
   },
 ];
 
-// EXERCISE TRACKER MICROSERVICE
 app.post("/api/users", (req, res) => {
   const user = {
     _id: `${_id++}`,
@@ -348,9 +348,18 @@ app.get("/api/users/:_id/logs", (req, res) => {
   let user = users.find((u) => u._id === _id);
   console.log("user:", user);
 
-  const count = user.count;
+  if (user) return res.json(user);
+  else return res.status(400).send("User not found");
+});
 
-  return res.json({ count });
+app.get("/api/users/:id/logs", (req, res) => {
+  let { id } = req.params;
+
+  let user = users.find((u) => u._id === id);
+  console.log("user:", user);
+
+  if (user) return res.json(user);
+  else return res.status(400).send("User not found");
 });
 
 // listen for requests :)
