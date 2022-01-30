@@ -303,12 +303,8 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   console.log("user found:", user);
 
   if (!date) {
-    // let today = new Date();
-    // date = today.toDateString();
     date = new Date();
   } else {
-    // let today = new Date(date);
-    // date = today.toDateString();
     date = new Date(date);
   }
 
@@ -321,13 +317,6 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   // };
   // console.log("exercise:", exercise);
 
-  // if (!user.log) {
-  //   user.log = [exercise];
-  // } else {
-  //   user.log.push(exercise);
-  // }
-
-  // if (user && exercise) return res.json({ exercise });
   if (user) {
     return res.json({
       username: user.username,
