@@ -335,6 +335,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     });
   } else {
     console.log("ERROR: could not save exercise");
+    return res.status(400).send("Error Saving Exercise");
   }
 });
 
@@ -348,7 +349,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
   console.log("user:", user);
 
   if (user) return res.json(user);
-  else return res.status(400).send("User not found");
+  else return res.status(400).send("User Not Found");
 });
 
 app.get("/api/users/:id/logs", (req, res) => {
@@ -360,8 +361,6 @@ app.get("/api/users/:id/logs", (req, res) => {
   let user = users.find((u) => u._id === id);
   console.log("user:", user);
 
-  // if (user) return res.json(user);
-  // else return res.status(400).send("User not found");
   if (user) {
     let logs = user.log;
     console.log("users/:id/logs", logs);
@@ -377,7 +376,7 @@ app.get("/api/users/:id/logs", (req, res) => {
         };
       }),
     });
-  } else return res.status(400).send("User not found");
+  } else return res.status(400).send("User Not Found");
 });
 
 // listen for requests :)
