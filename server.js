@@ -267,6 +267,11 @@ const users = [
   {
     _id: `-1`,
     username: "Chris",
+    count: 2,
+    log: [
+      { description: "running", duration: "40", date: "" },
+      { description: "legs", duration: "40", date: "" },
+    ],
   },
   {
     _id: `-2`,
@@ -362,6 +367,7 @@ app.get("/api/users/:id/logs", (req, res) => {
   // else return res.status(400).send("User not found");
   if (user) {
     let logs = user.log;
+    console.log("users/:id/logs", logs);
     return res.json({
       _id: user._id,
       username: user.username,
@@ -369,8 +375,8 @@ app.get("/api/users/:id/logs", (req, res) => {
       log: logs.map((log) => {
         return {
           description: log.description,
-          duration: log.duration,
-          date: log.date,
+          duration: parseInt(log.duration),
+          date: log.date.toDateString(),
         };
       }),
     });
