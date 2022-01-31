@@ -403,8 +403,8 @@ app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   //   // type,
   //   // size,
   // });
-  // if (file) return res.json(file);
-  // else return res.status(500).send("File Not Found");
+  if (file) return res.json(file);
+  else return res.status(500).send("File Not Found");
 });
 
 // listen for requests :)
