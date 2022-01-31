@@ -391,12 +391,12 @@ app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   // const { originalname, mimetype, size } = req.file;
   let file = req.file;
 
-  let file = {
-    name: originalname,
-    type: mimetype,
-    size: size,
-  };
-  console.log("file:", file);
+  // let file = {
+  //   name: originalname,
+  //   type: mimetype,
+  //   size: size,
+  // };
+  // console.log("file:", file);
 
   if (typeof file === "undefined") res.json({ error: "file not uploaded" });
 
