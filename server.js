@@ -51,11 +51,8 @@ app.get("/exercise-tracker-microservice", function (req, res) {
   res.sendFile(__dirname + "/views/exerciseTracker.html");
 });
 
-// app.get("/file-metadata-microservice", function (req, res) {
-//   res.sendFile(__dirname + "/views/fileMetadata.html");
-// });
-app.get("/file-metadata", function (req, res) {
-  res.sendFile(__dirname + "/views/file-metadata.html");
+app.get("/file-metadata-microservice", function (req, res) {
+  res.sendFile(__dirname + "/views/fileMetadata.html");
 });
 
 // API ROUTE(s)
@@ -385,14 +382,10 @@ app.get("/api/users/:id/logs", (req, res) => {
 // let upload = multer();
 // let upload = multer({ dest: "uploads/" });
 // let upload = multer({ storage: multer.memoryStorage() });
-// let upload = multer({
-//   dest: "https://api-and-microservice-projects.herokuapp.com/file-metadata",
-// });
 let upload = multer({
-  dest: "",
+  dest: "https://api-and-microservice-projects.herokuapp.com/file-metadata-microservice",
 });
 
-// app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
 app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   console.log(req.file);
   const { originalname, mimetype, size } = req.file;
