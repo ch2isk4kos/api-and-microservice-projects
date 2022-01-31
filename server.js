@@ -386,16 +386,20 @@ app.get("/api/users/:id/logs", (req, res) => {
 // let upload = multer();
 
 // app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
-app.post("/api/fileanalyse", multer().single("upfile"), (req, res) => {
-  console.log(req.file);
-  // const { originalname, mimetype, size } = req.file;
+app.post(
+  "/api/fileanalyse",
+  multer({ dest: "uploads/" }).single("upfile"),
+  (req, res) => {
+    console.log(req.file);
+    // const { originalname, mimetype, size } = req.file;
 
-  res.json({
-    name: req.file.originalname,
-    type: req.file.mimetype,
-    size: req.file.size,
-  });
-});
+    return res.json({
+      name: req.file.originalname,
+      type: req.file.mimetype,
+      size: req.file.size,
+    });
+  }
+);
 
 // listen for requests :)
 var listener = app.listen(PORT, () => {
