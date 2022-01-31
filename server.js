@@ -379,11 +379,10 @@ app.get("/api/users/:id/logs", (req, res) => {
 });
 
 // let upload = multer({ dest: "uploads/" });
-let upload = multer();
+let upload = multer("uploads/");
 
 app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
-  console.log("req.body.upfile:", req.body.upfile);
-  console.log("req.params.upfile:", req.params.upfile);
+  console.log(req.file);
   const { originalname, mimetype, size } = req.file;
   if (req.file) {
     return res.json({
