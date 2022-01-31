@@ -25,6 +25,7 @@ mongoose
 
 // middleware
 app.use(cors({ optionsSuccessStatus: 200 }));
+app.use("/public", express.static(process.cwd() + "/public"));
 app.use(bodyParser.urlencoded({ extended: false })); // parse form(s)/input(s)
 app.use(bodyParser.json()); // parse application/json
 app.use(express.static("public"));
@@ -384,8 +385,11 @@ app.get("/api/users/:id/logs", (req, res) => {
 // let upload = multer();
 // let upload = multer({ dest: "uploads/" });
 // let upload = multer({ storage: multer.memoryStorage() });
+// let upload = multer({
+//   dest: "https://api-and-microservice-projects.herokuapp.com/file-metadata",
+// });
 let upload = multer({
-  dest: "https://api-and-microservice-projects.herokuapp.com/file-metadata",
+  dest: "",
 });
 
 // app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
