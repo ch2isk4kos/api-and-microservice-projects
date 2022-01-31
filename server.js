@@ -378,33 +378,20 @@ app.get("/api/users/:id/logs", (req, res) => {
   else return res.status(400).send("User Not Found");
 });
 
-// let upload = multer({ dest: "uploads/" });
-let upload = multer({
-  dest: "https://api-and-microservice-projects.herokuapp.com/file-metadata-microservice/",
-});
+let upload = multer({ dest: "uploads/" });
+// let upload = multer({
+//   dest: "https://api-and-microservice-projects.herokuapp.com/file-metadata-microservice/",
+// });
 // let upload = multer();
 
 app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   console.log(req.file);
-  // const { originalname, mimetype, size } = req.file;
   const { originalname, mimetype, size } = req.file;
-  let file = {
+  res.json({
     name: originalname,
     type: mimetype,
-    size: parseStr(size),
-  };
-
-  console.log(file);
-  // res.json({
-  //   // name: originalname,
-  //   // type: mimetype,
-  //   // size,
-  //   // name,
-  //   // type,
-  //   // size,
-  // });
-  if (file) return res.json(file);
-  else return res.status(500).send("File Not Found");
+    size,
+  });
 });
 
 // listen for requests :)
