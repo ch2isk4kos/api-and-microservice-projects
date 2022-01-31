@@ -4,6 +4,7 @@ var cors = require("cors");
 var dns = require("dns");
 var express = require("express");
 var mongoose = require("mongoose");
+var multer = require("multer");
 var shortid = require("shortid");
 var app = express();
 require("dotenv").config();
@@ -377,10 +378,18 @@ app.get("/api/users/:id/logs", (req, res) => {
   else return res.status(400).send("User Not Found");
 });
 
-app.post("/api/fileanalyse", (req, res) => {
-  console.log("req.body:", req.body);
-  console.log("req.params:", req.params);
-  console.log("req.query:", req.query);
+let upload = multer({ dest: "uploads/" });
+
+app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
+  console.log("req.file:", req.file);
+  const { filename, mimetype, size } = req.file;
+  if (req.file) {
+    return res.json({
+      name: filename,
+      type: mimetype,
+      size,
+    });
+  } else return res.status(500).send("Invalid Submission");
 });
 
 // listen for requests :)
