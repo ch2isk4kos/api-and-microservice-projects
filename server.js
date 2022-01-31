@@ -55,7 +55,7 @@ app.get("/exercise-tracker-microservice", function (req, res) {
 //   res.sendFile(__dirname + "/views/fileMetadata.html");
 // });
 app.get("/file-metadata", function (req, res) {
-  res.sendFile(__dirname + "/views/fileMetadata.html");
+  res.sendFile(__dirname + "/views/file-metadata.html");
 });
 
 // API ROUTE(s)
