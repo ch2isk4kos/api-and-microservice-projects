@@ -384,12 +384,19 @@ let upload = multer();
 // let upload = multer({
 //   dest: "https://api-and-microservice-projects.herokuapp.com/file-metadata-microservice/",
 // });
-// let upload = multer();
 
 // app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
 app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   console.log(req.file);
   const { originalname, mimetype, size } = req.file;
+
+  let file = {
+    name: originalname,
+    type: mimetype,
+    size: size,
+  };
+  console.log("file:", file);
+
   return res.json({
     name: originalname,
     type: mimetype,
