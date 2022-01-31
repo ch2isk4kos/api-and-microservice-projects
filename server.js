@@ -386,26 +386,30 @@ let upload = multer({ dest: "uploads/" });
 //   dest: "https://api-and-microservice-projects.herokuapp.com/file-metadata-microservice/",
 // });
 
-app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
-  console.log(req.file);
-  // const { originalname, mimetype, size } = req.file;
-  let file = req.file;
+app.post(
+  "/file-metadata-microservice/api/fileanalyse",
+  upload.single("upfile"),
+  (req, res) => {
+    console.log(req.file);
+    // const { originalname, mimetype, size } = req.file;
+    let file = req.file;
 
-  // let file = {
-  //   name: originalname,
-  //   type: mimetype,
-  //   size: size,
-  // };
-  // console.log("file:", file);
+    // let file = {
+    //   name: originalname,
+    //   type: mimetype,
+    //   size: size,
+    // };
+    // console.log("file:", file);
 
-  if (typeof file === "undefined") res.json({ error: "file not uploaded" });
+    if (typeof file === "undefined") res.json({ error: "file not uploaded" });
 
-  return res.json({
-    name: file.originalname,
-    type: file.mimetype,
-    size: file.size,
-  });
-});
+    return res.json({
+      name: file.originalname,
+      type: file.mimetype,
+      size: file.size,
+    });
+  }
+);
 
 // listen for requests :)
 var listener = app.listen(PORT, () => {
