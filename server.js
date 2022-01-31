@@ -378,10 +378,10 @@ app.get("/api/users/:id/logs", (req, res) => {
   else return res.status(400).send("User Not Found");
 });
 
-// let upload = multer({ dest: "uploads/" });
-let upload = multer();
+let upload = multer({ dest: "uploads/" });
+// let upload = multer();
 
-app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
+app.post("/api/fileanalyse", upload.single("img"), (req, res) => {
   console.log(req.file);
   const { originalname, mimetype, size } = req.file;
   if (req.file) {
