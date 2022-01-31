@@ -389,6 +389,7 @@ let upload = multer({ dest: "uploads/" });
 app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   console.log(req.file);
   // const { originalname, mimetype, size } = req.file;
+  let file = req.file;
 
   let file = {
     name: originalname,
@@ -397,10 +398,12 @@ app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   };
   console.log("file:", file);
 
+  if (typeof file === "undefined") res.json({ error: "file not uploaded" });
+
   return res.json({
-    name: originalname,
-    type: mimetype,
-    size,
+    name: file.originalname,
+    type: file.mimetype,
+    size: file.size,
   });
 });
 
