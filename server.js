@@ -381,16 +381,14 @@ app.get("/api/users/:id/logs", (req, res) => {
 let upload = multer({ dest: "uploads/" });
 // let upload = multer();
 
-app.post("/api/fileanalyse", upload.single("img"), (req, res) => {
+app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   console.log(req.file);
-  const { originalname, mimetype, size } = req.file;
-  if (req.file) {
-    return res.json({
-      name: originalname,
-      type: mimetype,
-      size,
-    });
-  } else return res.status(500).send("Invalid Submission");
+  const { originalname: name, mimetype: type, size } = req.file;
+  return res.json({
+    name,
+    type,
+    size,
+  });
 });
 
 // listen for requests :)
