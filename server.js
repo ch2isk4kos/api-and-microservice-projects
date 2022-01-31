@@ -386,10 +386,14 @@ let upload = multer({
 
 app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   console.log(req.file);
-  const { originalname, mimetype, size } = req.file;
+  // const { originalname, mimetype, size } = req.file;
+  const { originalname: name, mimetype: type, size } = req.file;
   return res.json({
-    name: originalname,
-    type: mimetype,
+    // name: originalname,
+    // type: mimetype,
+    // size,
+    name,
+    type,
     size,
   });
 });
