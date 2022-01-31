@@ -378,15 +378,18 @@ app.get("/api/users/:id/logs", (req, res) => {
   else return res.status(400).send("User Not Found");
 });
 
-let upload = multer({ dest: "uploads/" });
+// let upload = multer({ dest: "uploads/" });
+let upload = multer({
+  dest: "https://api-and-microservice-projects.herokuapp.com/file-metadata-microservice/",
+});
 // let upload = multer();
 
 app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   console.log(req.file);
-  const { originalname: name, mimetype: type, size } = req.file;
+  const { originalname, mimetype, size } = req.file;
   return res.json({
-    name,
-    type,
+    name: originalname,
+    type: mimetype,
     size,
   });
 });
