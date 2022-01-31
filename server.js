@@ -50,7 +50,10 @@ app.get("/exercise-tracker-microservice", function (req, res) {
   res.sendFile(__dirname + "/views/exerciseTracker.html");
 });
 
-app.get("/file-metadata-microservice", function (req, res) {
+// app.get("/file-metadata-microservice", function (req, res) {
+//   res.sendFile(__dirname + "/views/fileMetadata.html");
+// });
+app.get("/file-metadata", function (req, res) {
   res.sendFile(__dirname + "/views/fileMetadata.html");
 });
 
