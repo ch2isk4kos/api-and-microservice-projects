@@ -389,12 +389,11 @@ let upload = multer();
 // app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
 app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
   console.log(req.file);
-  // const { originalname, mimetype, size } = req.file;
-
+  const { originalname, mimetype, size } = req.file;
   return res.json({
-    name: req.file.originalname,
-    type: req.file.mimetype,
-    size: req.file.size,
+    name: originalname,
+    type: mimetype,
+    size,
   });
 });
 
